@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from '@typegoose/typegoose/lib/types';
+import { UserEntity } from '../user/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -10,10 +11,11 @@ export class AuthService {
    * 2. authentication and actions with user will be separated
    */
   constructor(
-    @InjectModel(UserModel) private readonly UserModel: ModelType<UserModel>
+    @InjectModel(UserEntity) private readonly UserEntity: ModelType<UserEntity>
   ) {}
 
   async register(dto: any) {
-    return undefined;
+    const newUser = new this.UserEntity(dto);
+    return newUser.save();
   }
 }
