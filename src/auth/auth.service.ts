@@ -13,7 +13,7 @@ export class AuthService {
     @InjectModel(UserModel) private readonly UserModel: ModelType<UserModel>
   ) {}
 
-  async register() {
+  async register(dto: any) {
     return undefined;
   }
 }
