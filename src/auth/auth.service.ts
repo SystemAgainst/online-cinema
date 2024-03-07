@@ -59,4 +59,9 @@ export class AuthService {
 
     return user;
   }
+
+  private async getTokenPair(userId: string) {
+    const data = { _id: userId };
+    return Promise.resolve(undefined);
+  }
 }
