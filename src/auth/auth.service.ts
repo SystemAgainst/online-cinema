@@ -1,7 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from '@typegoose/typegoose/lib/types';
-import { genSalt, hash } from 'bcryptjs';
+import { compare, genSalt, hash } from 'bcryptjs';
 
 import { UserEntity } from '../user/user.entity';
 import { AuthDto } from './dto/auth.dto';
@@ -16,6 +20,10 @@ export class AuthService {
   constructor(
     @InjectModel(UserEntity) private readonly UserEntity: ModelType<UserEntity>
   ) {}
+
+  async login(dto: AuthDto) {
+    return this.validateUser(dto);
+  }
 
   async register(dto: AuthDto) {
     const isUserExisted = await this.UserEntity.findOne({ email: dto.email });
@@ -34,5 +42,21 @@ export class AuthService {
     });
 
     return newUser.save();
+  }
+
+  private async validateUser(dto: AuthDto) {
+    const user = await this.UserEntity.findOne({ email: dto.email });
+
+    if (!user) {
+      throw new UnauthorizedException('User is not found');
+    }
+
+    const isValidPassword = await compare(dto.password, user.password);
+
+    if (!isValidPassword) {
+      throw new UnauthorizedException('Invalid password');
+    }
+
+    return user;
   }
 }
