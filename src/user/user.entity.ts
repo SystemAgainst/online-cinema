@@ -1,7 +1,7 @@
 import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 import { prop } from '@typegoose/typegoose';
 
-export interface UserModel extends Base {}
+export interface IUserEntity extends Base {}
 
 export class UserEntity extends TimeStamps {
   @prop({ unique: true })
