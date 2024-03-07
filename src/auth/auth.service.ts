@@ -9,6 +9,7 @@ import { compare, genSalt, hash } from 'bcryptjs';
 
 import { UserEntity } from '../user/user.entity';
 import { AuthDto } from './dto/auth.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,8 @@ export class AuthService {
    * 2. authentication and actions with user will be separated
    */
   constructor(
-    @InjectModel(UserEntity) private readonly UserEntity: ModelType<UserEntity>
+    @InjectModel(UserEntity) private readonly UserEntity: ModelType<UserEntity>,
+    private readonly jwtService: JwtService
   ) {}
 
   async login(dto: AuthDto) {
@@ -41,7 +43,13 @@ export class AuthService {
       password: await hash(dto.password, salt),
     });
 
-    return newUser.save();
+    const tokens = await this.getTokenPair(String(newUser._id));
+
+    // return newUser.save();
+    return {
+      user: this.getUserFields(newUser),
+      ...tokens,
+    };
   }
 
   private async validateUser(dto: AuthDto) {
@@ -62,6 +70,22 @@ export class AuthService {
 
   private async getTokenPair(userId: string) {
     const data = { _id: userId };
-    return Promise.resolve(undefined);
+
+    const refreshToken = await this.jwtService.signAsync(data, {
+      expiresIn: '15d',
+    });
+
+    const accessToken = await this.jwtService.signAsync(data, {
+      expiresIn: '1d',
+    });
+    return { refreshToken, accessToken };
+  }
+
+  private getUserFields(user: UserEntity) {
+    return {
+      _id: user._id,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    };
   }
 }
