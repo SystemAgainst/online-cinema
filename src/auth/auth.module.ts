@@ -4,8 +4,9 @@ import { AuthController } from './auth.controller';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { UserEntity } from '../user/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { getJwtConfig } from '../config/jwt.config';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   controllers: [AuthController],
@@ -25,6 +26,6 @@ import { getJwtConfig } from '../config/jwt.config';
       useFactory: getJwtConfig,
     }),
   ],
-  providers: [AuthService, JwtService],
+  providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

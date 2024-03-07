@@ -15,4 +15,6 @@ export class UserEntity extends TimeStamps {
 
   @prop({ default: [] })
   favourites?: [];
+
+  _id: any; // костыль
 }

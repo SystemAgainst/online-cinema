@@ -13,18 +13,20 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  /**
-   * TODO:
-   * 1. add entity for db-connection
-   * 2. authentication and actions with user will be separated
-   */
   constructor(
     @InjectModel(UserEntity) private readonly UserEntity: ModelType<UserEntity>,
     private readonly jwtService: JwtService
   ) {}
 
   async login(dto: AuthDto) {
-    return this.validateUser(dto);
+    const user = await this.validateUser(dto);
+
+    const tokens = await this.getTokenPair(String(user._id));
+
+    return {
+      user: this.getUserFields(user),
+      ...tokens,
+    };
   }
 
   async register(dto: AuthDto) {
