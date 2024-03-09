@@ -8,17 +8,17 @@ import { UserModule } from './user/user.module';
 import { getMongoConfig } from './config/mongo.config';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot(),
-    TypegooseModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: getMongoConfig,
-    }),
-    AuthModule,
-    UserModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+	imports: [
+		ConfigModule.forRoot(),
+		TypegooseModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: getMongoConfig,
+		}),
+		AuthModule,
+		UserModule,
+	],
+	controllers: [AppController],
+	providers: [AppService],
 })
 export class AppModule {}
