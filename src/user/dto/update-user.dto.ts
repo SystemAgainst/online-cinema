@@ -1,14 +1,10 @@
-import { IsEmail, IsString, MinLength } from 'class-validator';
+import { IsEmail } from 'class-validator';
 
 export class UpdateUserDto {
 	@IsEmail()
 	email: string;
 
-	@IsString()
-	@MinLength(6, {
-		message: 'Password can not be less than 6 symbols',
-	})
-	password: string;
+	password?: string;
 
 	isAdmin?: boolean;
 }
