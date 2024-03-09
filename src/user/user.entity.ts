@@ -1,8 +1,10 @@
 import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 import { prop } from '@typegoose/typegoose';
 
-export interface IUserEntity extends Base {}
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+export interface UserEntity extends Base {}
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class UserEntity extends TimeStamps {
 	@prop({ unique: true })
 	email: string;
@@ -15,6 +17,4 @@ export class UserEntity extends TimeStamps {
 
 	@prop({ default: [] })
 	favourites?: [];
-
-	_id: any; // костыль
 }
