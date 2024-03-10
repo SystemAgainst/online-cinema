@@ -7,6 +7,11 @@ import { IdValidationPipe } from '../pipes/id.validation.pipe';
 export class GenreController {
 	constructor(private readonly genreService: GenreService) {}
 
+	@Get('by-slug/:slug')
+	async getBySlug(@Param('slug') slug: string) {
+		return this.genreService.getBySlug(slug);
+	}
+
 	@Get()
 	async getAll(@Query('searchTerm') searchTerm?: string) {
 		return this.genreService.getAll(searchTerm);
