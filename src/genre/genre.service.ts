@@ -18,6 +18,32 @@ export class GenreService {
 		return user;
 	}
 
+	async getAll(searchTerm?: string) {
+		let options = {};
+
+		if (searchTerm) {
+			options = {
+				$or: [
+					{
+						name: new RegExp(searchTerm, 'i'),
+					},
+					{
+						slug: new RegExp(searchTerm, 'i'),
+					},
+					{
+						description: new RegExp(searchTerm, 'i'),
+					},
+				],
+			};
+		}
+
+		return this.genreEntity
+			.find(options)
+			.select('-updatedAt -__v')
+			.sort({ createdAt: 'desc' })
+			.exec();
+	}
+
 	// async createGenre() {
 	// 	const defaultValue: CreateGenreDto = {
 	// 		name: '',

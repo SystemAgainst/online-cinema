@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { GenreService } from './genre.service';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { IdValidationPipe } from '../pipes/id.validation.pipe';
@@ -6,6 +6,11 @@ import { IdValidationPipe } from '../pipes/id.validation.pipe';
 @Controller('genre')
 export class GenreController {
 	constructor(private readonly genreService: GenreService) {}
+
+	@Get()
+	async getAll(@Query('searchTerm') searchTerm?: string) {
+		return this.genreService.getAll(searchTerm);
+	}
 
 	@Get(':id')
 	@Auth('admin')
