@@ -13,7 +13,7 @@ export class GenreService {
 	async getById(_id: string) {
 		const user = await this.genreEntity.findById(_id);
 
-		if (!user) throw new NotFoundException('User not found');
+		if (!user) throw new NotFoundException('Genre not found');
 
 		return user;
 	}
