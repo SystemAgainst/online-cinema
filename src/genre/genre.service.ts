@@ -11,11 +11,11 @@ export class GenreService {
 	) {}
 
 	async getById(_id: string) {
-		const user = await this.genreEntity.findById(_id);
+		const genre = await this.genreEntity.findById(_id);
 
-		if (!user) throw new NotFoundException('Genre not found');
+		if (!genre) throw new NotFoundException('Genre not found');
 
-		return user;
+		return genre;
 	}
 
 	async getAll(searchTerm?: string) {
