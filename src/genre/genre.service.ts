@@ -53,6 +53,19 @@ export class GenreService {
 		return genre;
 	}
 
+	async createGenre() {
+		const defaultValue: CreateGenreDto = {
+			name: '',
+			slug: '',
+			description: '',
+			icon: '',
+		};
+
+		const genre = await this.genreEntity.create(defaultValue);
+
+		return genre._id;
+	}
+
 	async updateGenre(_id: string, dto: CreateGenreDto) {
 		return this.genreEntity.findByIdAndUpdate(_id, dto, { new: true }).exec();
 	}
@@ -60,17 +73,4 @@ export class GenreService {
 	async deleteGenre(_id: string) {
 		return this.genreEntity.findByIdAndDelete(_id).exec();
 	}
-
-	// async createGenre() {
-	// 	const defaultValue: CreateGenreDto = {
-	// 		name: '',
-	// 		slug: '',
-	// 		description: '',
-	// 		icon: '',
-	// 	};
-	//
-	// 	const genre = await this.genreEntity.create(defaultValue);
-	//
-	// 	return genre._id;
-	// }
 }
