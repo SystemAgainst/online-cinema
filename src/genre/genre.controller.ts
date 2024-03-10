@@ -50,7 +50,7 @@ export class GenreController {
 	}
 
 	@UsePipes(new ValidationPipe())
-	@Put()
+	@Put(':id')
 	@HttpCode(200)
 	@Auth('admin')
 	async updateGenre(
@@ -60,9 +60,10 @@ export class GenreController {
 		return this.genreService.updateGenre(id, dto);
 	}
 
-	@Delete()
+	@Delete(':id')
+	@HttpCode(200)
 	@Auth('admin')
-	async deleteGenre(id: string) {
+	async deleteGenre(@Param('id', IdValidationPipe) id: string) {
 		return this.genreService.deleteGenre(id);
 	}
 }
