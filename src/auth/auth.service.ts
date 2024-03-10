@@ -66,10 +66,12 @@ export class AuthService {
 			password: await hash(dto.password, salt),
 		});
 
-		const tokens = await this.getTokenPair(String(newUser._id));
+		const user = await newUser.save();
+
+		const tokens = await this.getTokenPair(String(user._id));
 
 		return {
-			user: this.getUserFields(newUser),
+			user: this.getUserFields(user),
 			...tokens,
 		};
 	}
