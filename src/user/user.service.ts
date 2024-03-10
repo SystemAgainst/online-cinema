@@ -41,4 +41,12 @@ export class UserService {
 
 		return await user.save();
 	}
+
+	async getCount() {
+		return this.userEntity.find().count().exec();
+	}
+
+	async delete(id: string) {
+		return this.userEntity.findByIdAndDelete(id).exec();
+	}
 }

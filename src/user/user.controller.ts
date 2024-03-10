@@ -1,8 +1,10 @@
 import {
 	Body,
 	Controller,
+	Delete,
 	Get,
 	HttpCode,
+	NotFoundException,
 	Param,
 	Put,
 	UsePipes,
@@ -17,6 +19,12 @@ import { IdValidationPipe } from '../pipes/id.validation.pipe';
 @Controller('users')
 export class UserController {
 	constructor(private readonly userService: UserService) {}
+
+	@Get('count')
+	@Auth('admin')
+	async getCountUsers() {
+		return this.userService.getCount();
+	}
 
 	@Get('profile')
 	@Auth()
@@ -41,5 +49,12 @@ export class UserController {
 		@Body() data: UpdateUserDto
 	) {
 		return this.userService.updateProfile(id, data);
+	}
+
+	@Delete(':id')
+	@Auth('admin')
+	async delete(@Param('id', IdValidationPipe) id: string) {
+		const deletedDoc = await this.userService.delete(id);
+		if (!deletedDoc) throw new NotFoundException('Movie not found');
 	}
 }
