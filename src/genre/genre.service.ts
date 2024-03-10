@@ -15,6 +15,9 @@ export class GenreService {
 		return this.genreEntity.findOne({ slug }).exec();
 	}
 
+	// TODO: realized entity film to finish this function
+	async getCollections() {}
+
 	async getAll(searchTerm?: string) {
 		let options = {};
 
