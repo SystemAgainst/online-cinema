@@ -67,10 +67,20 @@ export class GenreService {
 	}
 
 	async updateGenre(_id: string, dto: CreateGenreDto) {
-		return this.genreEntity.findByIdAndUpdate(_id, dto, { new: true }).exec();
+		const updatedGenre = await this.genreEntity
+			.findByIdAndUpdate(_id, dto, { new: true })
+			.exec();
+
+		if (!updatedGenre) throw new NotFoundException('Genre not found');
+
+		return updatedGenre;
 	}
 
 	async deleteGenre(_id: string) {
-		return this.genreEntity.findByIdAndDelete(_id).exec();
+		const deletedGenre = await this.genreEntity.findByIdAndDelete(_id).exec();
+
+		if (!deletedGenre) throw new NotFoundException('Genre not found');
+
+		return deletedGenre;
 	}
 }

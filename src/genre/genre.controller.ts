@@ -1,6 +1,7 @@
 import {
 	Body,
 	Controller,
+	Delete,
 	Get,
 	HttpCode,
 	Param,
@@ -57,5 +58,11 @@ export class GenreController {
 		@Body() dto: CreateGenreDto
 	) {
 		return this.genreService.updateGenre(id, dto);
+	}
+
+	@Delete()
+	@Auth('admin')
+	async deleteGenre(id: string) {
+		return this.genreService.deleteGenre(id);
 	}
 }
