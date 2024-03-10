@@ -1,9 +1,11 @@
 import {
+	Body,
 	Controller,
 	Get,
 	HttpCode,
 	Param,
 	Post,
+	Put,
 	Query,
 	UsePipes,
 	ValidationPipe,
@@ -11,6 +13,7 @@ import {
 import { GenreService } from './genre.service';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { IdValidationPipe } from '../pipes/id.validation.pipe';
+import { CreateGenreDto } from './dto/create-genre.dto';
 
 @Controller('genres')
 export class GenreController {
@@ -43,5 +46,16 @@ export class GenreController {
 	@Auth('admin')
 	async createGenre() {
 		return this.genreService.createGenre();
+	}
+
+	@UsePipes(new ValidationPipe())
+	@Put()
+	@HttpCode(200)
+	@Auth('admin')
+	async updateGenre(
+		@Param('id', IdValidationPipe) id: string,
+		@Body() dto: CreateGenreDto
+	) {
+		return this.genreService.updateGenre(id, dto);
 	}
 }
