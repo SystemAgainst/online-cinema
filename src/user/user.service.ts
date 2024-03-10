@@ -46,6 +46,26 @@ export class UserService {
 		return this.userEntity.find().count().exec();
 	}
 
+	async getAll(searchTerm?: string) {
+		let options = {};
+
+		if (searchTerm) {
+			options = {
+				$or: [
+					{
+						email: new RegExp(searchTerm, 'i'),
+					},
+				],
+			};
+		}
+
+		return this.userEntity
+			.find(options)
+			.select('-password -updatedAt -__v')
+			.sort({ createdAt: 'desc' })
+			.exec();
+	}
+
 	async delete(id: string) {
 		return this.userEntity.findByIdAndDelete(id).exec();
 	}

@@ -7,6 +7,7 @@ import {
 	NotFoundException,
 	Param,
 	Put,
+	Query,
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common';
@@ -20,12 +21,6 @@ import { IdValidationPipe } from '../pipes/id.validation.pipe';
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
-	@Get('count')
-	@Auth('admin')
-	async getCountUsers() {
-		return this.userService.getCount();
-	}
-
 	@Get('profile')
 	@Auth()
 	async getProfile(@User('_id') _id: string) {
@@ -38,6 +33,24 @@ export class UserController {
 	@Auth()
 	async updateProfile(@User('_id') _id: string, @Body() dto: UpdateUserDto) {
 		return this.userService.updateProfile(_id, dto);
+	}
+
+	@Get('count')
+	@Auth('admin')
+	async getCountUsers() {
+		return this.userService.getCount();
+	}
+
+	@Get()
+	@Auth('admin')
+	async getUsers(@Query('searchTerm') searchTerm?: string) {
+		return this.userService.getAll(searchTerm);
+	}
+
+	@Get(':id')
+	@Auth('admin')
+	async getUser(@Param('id', IdValidationPipe) id: string) {
+		return this.userService.getDataById(id);
 	}
 
 	@UsePipes(new ValidationPipe())
