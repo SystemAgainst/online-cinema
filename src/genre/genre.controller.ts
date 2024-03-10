@@ -3,13 +3,18 @@ import { GenreService } from './genre.service';
 import { Auth } from '../auth/decorators/auth.decorator';
 import { IdValidationPipe } from '../pipes/id.validation.pipe';
 
-@Controller('genre')
+@Controller('genres')
 export class GenreController {
 	constructor(private readonly genreService: GenreService) {}
 
 	@Get('by-slug/:slug')
 	async getBySlug(@Param('slug') slug: string) {
 		return this.genreService.getBySlug(slug);
+	}
+
+	@Get('/collections')
+	async getCollections() {
+		return this.genreService.getCollections();
 	}
 
 	@Get()
