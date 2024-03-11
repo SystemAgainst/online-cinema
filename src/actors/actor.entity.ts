@@ -5,17 +5,14 @@ import { Types } from 'mongoose';
 export interface IActorEntity extends Base {}
 
 export class ActorEntity extends TimeStamps implements IActorEntity {
+	@prop()
+	name: string;
+
 	@prop({ unique: true })
-	email: string;
+	slug: string;
 
 	@prop()
-	password: string;
-
-	@prop({ default: false })
-	isAdmin: boolean;
-
-	@prop({ default: [] })
-	favourites?: [];
+	photo: boolean;
 
 	_id: Types.ObjectId;
 	id: string;
