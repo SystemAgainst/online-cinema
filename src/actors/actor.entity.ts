@@ -1,10 +1,11 @@
 import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 import { prop } from '@typegoose/typegoose';
-import { Types } from 'mongoose';
 
-export interface IActorEntity extends Base {}
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+export interface ActorEntity extends Base {}
 
-export class ActorEntity extends TimeStamps implements IActorEntity {
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+export class ActorEntity extends TimeStamps {
 	@prop()
 	name: string;
 
@@ -13,7 +14,4 @@ export class ActorEntity extends TimeStamps implements IActorEntity {
 
 	@prop()
 	photo: boolean;
-
-	_id: Types.ObjectId;
-	id: string;
 }
