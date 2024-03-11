@@ -35,7 +35,7 @@ export class ActorsService {
 
 		return this.actorEntity
 			.find(options)
-			.select('-updateAt - __v')
+			.select('-updatedAt -__v')
 			.sort({ createdAt: 'desc' })
 			.exec();
 	}
