@@ -13,5 +13,5 @@ export class ActorEntity extends TimeStamps {
 	slug: string;
 
 	@prop()
-	photo: boolean;
+	photo: string;
 }
