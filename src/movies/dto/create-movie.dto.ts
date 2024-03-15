@@ -1,4 +1,4 @@
-import { IsArray, IsNumber, IsString } from "class-validator";
+import { IsArray, IsNumber, IsObject, IsString } from "class-validator";
 
 export class Parameters {
   @IsNumber()
@@ -38,6 +38,6 @@ export class CreateMovieDto {
   @IsString()
   description: string;
 
-  @IsString()
+  @IsObject()
   parameters?: Parameters;
 }
