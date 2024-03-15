@@ -4,7 +4,7 @@ import { ActorEntity } from "src/actors/actor.entity";
 import { GenreEntity } from "src/genre/genre.entity";
 
 
-export interface IMoviesEntity extends Base {}
+export interface MoviesEntity extends Base {}
 
 export class Parameters {
   @prop()
@@ -17,7 +17,7 @@ export class Parameters {
   country: string;
 }
 
-export class MoviesEntity extends TimeStamps implements IMoviesEntity {
+export class MoviesEntity extends TimeStamps {
   @prop({unique: true})
   slug: string;
 
