@@ -9,6 +9,7 @@ import { getMongoConfig } from './config/mongo.config';
 import { GenreModule } from './genre/genre.module';
 import { FilesModule } from './files/files.module';
 import { ActorsModule } from './actors/actors.module';
+import { MoviesModule } from './movies/movies.module';
 
 @Module({
 	imports: [
@@ -23,6 +24,7 @@ import { ActorsModule } from './actors/actors.module';
 		GenreModule,
 		FilesModule,
 		ActorsModule,
+		MoviesModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
