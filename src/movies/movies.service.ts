@@ -5,6 +5,7 @@ import { NotFoundError } from 'rxjs';
 import { Types } from 'mongoose';
 
 import { MoviesEntity } from './movies.entity';
+import { CreateMovieDto } from './dto/create-movie.dto';
 
 
 @Injectable()
@@ -57,5 +58,53 @@ export class MoviesService {
 
   async getByGenreIds(genreIds: Types.ObjectId[]) {
 		return this.moviesEntity.find({ genres: { $in: genreIds } }).exec();
+	}
+
+  async updateCountOpened(slug: string) {
+		return this.moviesEntity
+			.findOneAndUpdate({ slug }, { $inc: { countOpened: 1 } })
+			.exec()
+	}
+
+  /* Admin area */
+
+	async create() {
+		const defaultValue: CreateMovieDto = {
+			bigPoster: '',
+			actors: [],
+			genres: [],
+			description: '',
+			poster: '',
+			title: '',
+			videoUrl: '',
+			slug: '',
+		}
+		const movie = await this.moviesEntity.create(defaultValue)
+		return movie._id
+	}
+
+	async update(
+		id: string,
+		dto: CreateMovieDto
+	) {
+		return this.moviesEntity.findByIdAndUpdate(id, dto, { new: true }).exec()
+	}
+
+	async delete(id: string) {
+		return this.moviesEntity.findByIdAndDelete(id).exec()
+	}
+
+	async getMostPopular() {
+		return this.moviesEntity
+			.find({ countOpened: { $gt: 0 } })
+			.sort({ countOpened: -1 })
+			.populate('genres')
+			.exec()
+	}
+
+	async updateRating(id: string, newRating: number) {
+		return this.moviesEntity
+			.findByIdAndUpdate(id, { rating: newRating }, { new: true })
+			.exec()
 	}
 }
