@@ -1,8 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
-import { MoviesEntity } from './movies.entity';
 import { ModelType } from '@typegoose/typegoose/lib/types';
 import { NotFoundError } from 'rxjs';
+import { Types } from 'mongoose';
+
+import { MoviesEntity } from './movies.entity';
+
 
 @Injectable()
 export class MoviesService {
@@ -47,4 +50,12 @@ export class MoviesService {
 
     return entityById;
   }
+
+  async getByActorId(actorId: Types.ObjectId) {
+    return this.moviesEntity.find({actors: actorId}).exec();;
+  }
+
+  async getByGenreIds(genreIds: Types.ObjectId[]) {
+		return this.moviesEntity.find({ genres: { $in: genreIds } }).exec();
+	}
 }
