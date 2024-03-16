@@ -14,4 +14,9 @@ export class MoviesController {
   async getAll(@Query('searchTerm') searchTerm?: string) {
     return this.moviesService.getAll(searchTerm);
   }
+
+  @Get()
+  async getById(@Param('id') id: string) {
+    return this.moviesService.getById(id);
+  }
 }
