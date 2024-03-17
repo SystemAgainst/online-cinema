@@ -4,6 +4,7 @@ import { IdValidationPipe } from 'src/pipes/id.validation.pipe';
 import { Types } from 'mongoose';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { CreateMovieDto } from './dto/create-movie.dto';
+import { GenreIdsDto } from 'src/genre/dto/genreIds.dto';
 
 @Controller('movies')
 export class MoviesController {
@@ -23,7 +24,7 @@ export class MoviesController {
 	@HttpCode(200)
 	async getByGenreIds(
 		@Body('genreIds')
-		genreIds: Types.ObjectId[]
+		{ genreIds }: GenreIdsDto
 	) {
 		return this.moviesService.getByGenreIds(genreIds);
 	}
