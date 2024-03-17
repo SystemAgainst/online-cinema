@@ -33,15 +33,15 @@ export class MoviesController {
     return this.moviesService.getAll(searchTerm);
   }
 
-  @Get('/most-popular')
+  @Get('most-popular')
 	async getMostPopular() {
-		return this.moviesService.getMostPopular()
+		return this.moviesService.getMostPopular();
 	}
 
-  @Post('/update-count-opened')
+  @Put('update-count-opened')
 	@HttpCode(200)
 	async updateCountOpened(@Body('slug') slug: string) {
-		return this.moviesService.updateCountOpened(slug)
+		return this.moviesService.updateCountOpened(slug);
 	}
 
   @Get()
@@ -49,11 +49,12 @@ export class MoviesController {
     return this.moviesService.getById(id);
   }
 
+  @UsePipes(new ValidationPipe())
   @Post()
 	@HttpCode(200)
 	@Auth('admin')
 	async create() {
-		return this.moviesService.create()
+		return this.moviesService.create();
 	}
 
   @UsePipes(new ValidationPipe())
@@ -64,9 +65,7 @@ export class MoviesController {
 		@Param('id', IdValidationPipe) id: string,
 		@Body() dto: CreateMovieDto
 	) {
-		const updateMovie = await this.moviesService.update(id, dto)
-		if (!updateMovie) throw new NotFoundException('Movie not found')
-		return updateMovie
+		return this.moviesService.update(id, dto);
 	}
 
 	@Delete(':id')

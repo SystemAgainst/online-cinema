@@ -40,7 +40,7 @@ export class MoviesService {
       .find(options)
       .select('-updatedAt -__v')
       .sort({ createdAt: 'desc' })
-      .populate('actors genre')
+      .populate('actors genres')
       .exec();
   }
 
@@ -53,7 +53,7 @@ export class MoviesService {
   }
 
   async getByActorId(actorId: Types.ObjectId) {
-    return this.moviesEntity.find({actors: actorId}).exec();;
+    return this.moviesEntity.find({ actors: actorId }).exec();;
   }
 
   async getByGenreIds(genreIds: Types.ObjectId[]) {
@@ -61,20 +61,28 @@ export class MoviesService {
 	}
 
   async updateCountOpened(slug: string) {
-		return this.moviesEntity
-			.findOneAndUpdate({ slug }, { $inc: { countOpened: 1 } })
-			.exec()
+		const updateEntity = await this.moviesEntity
+			.findOneAndUpdate(
+        { slug }, 
+        { $inc: { countOpened: 1 } }, 
+        { new: true },
+      )
+      .exec();
+      
+    if (!updateEntity) throw new NotFoundException('Movie not found!');
+
+    return updateEntity;
 	}
 
   /* Admin area */
 
 	async create() {
 		const defaultValue: CreateMovieDto = {
-			bigPoster: '',
 			actors: [],
 			genres: [],
 			description: '',
 			poster: '',
+      bigPoster: '',
 			title: '',
 			videoUrl: '',
 			slug: '',
@@ -87,7 +95,11 @@ export class MoviesService {
 		id: string,
 		dto: CreateMovieDto
 	) {
-		return this.moviesEntity.findByIdAndUpdate(id, dto, { new: true }).exec()
+    const updateEntity = await this.moviesEntity.findByIdAndUpdate(id, dto, { new: true}).exec();
+
+    if (!updateEntity) throw new NotFoundException('Movie not found!');
+
+    return updateEntity;
 	}
 
 	async delete(id: string) {

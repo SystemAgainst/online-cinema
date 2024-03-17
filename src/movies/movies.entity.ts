@@ -40,11 +40,11 @@ export class MoviesEntity extends TimeStamps {
   title: string;
 
   @prop()
-  description: string;
+  description?: string;
 
   // ~ popularity
   @prop({default: 0})
-  countOpend?: number;
+	countOpened?: number;
 
   @prop({default: 4.0})
   rating?: number;
