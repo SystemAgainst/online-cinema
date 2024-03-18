@@ -1,5 +1,6 @@
 import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
-import { prop } from '@typegoose/typegoose';
+import { Ref, prop } from '@typegoose/typegoose';
+import { MoviesEntity } from 'src/movies/movies.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface UserEntity extends Base {}
@@ -13,8 +14,8 @@ export class UserEntity extends TimeStamps {
 	password: string;
 
 	@prop({ default: false })
-	isAdmin: boolean;
+	isAdmin?: boolean;
 
-	@prop({ default: [] })
-	favourites?: [];
+	@prop({ default: [], ref: () => MoviesEntity })
+	favorites?: Ref<MoviesEntity>[];
 }

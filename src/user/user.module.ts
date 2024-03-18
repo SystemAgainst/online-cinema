@@ -6,7 +6,6 @@ import { UserEntity } from './user.entity';
 
 @Module({
 	controllers: [UserController],
-	providers: [UserService],
 	imports: [
 		TypegooseModule.forFeature([
 			{
@@ -17,5 +16,7 @@ import { UserEntity } from './user.entity';
 			},
 		]),
 	],
+	providers: [UserService],
+	exports: [UserService],
 })
 export class UserModule {}
